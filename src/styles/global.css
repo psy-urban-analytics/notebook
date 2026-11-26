@@ -109,6 +109,7 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%); color: i
 .prose h3 { font-size: 17px; margin-top: 22px; }
 .prose img { border: 1px solid var(--ink); }
 .prose blockquote { margin-left: 0; font-family: var(--hand); font-size: 17px; color: var(--navy); border-left: 3px solid var(--yellow); padding-left: 14px; }
+.prose a { text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .prose code { font-family: var(--mono); font-size: .9em; background: #efefec; padding: 1px 4px; }
 .prose pre { overflow-x: auto; background: #efefec; padding: 12px; }
 .prose table { display: block; overflow-x: auto; border-collapse: collapse; }
