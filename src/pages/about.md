@@ -9,5 +9,5 @@ title: 關於
 
 這裡的紀錄主要是學習中的筆記及生活觀察，不一定能完整呈現，但我會慢慢補上。
 
-2023-2025之間我和夥伴一起錄過 podcast [《卡拉狂想區》](https://open.firstory.fm/user/callamadness/episodes)
+2023-2025之間我和夥伴一起錄過 podcast [《卡拉狂想曲》](https://open.firstory.fm/user/callamadness/episodes)  
 也歡迎聆聽喔!
