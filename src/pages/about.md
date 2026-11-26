@@ -2,7 +2,7 @@
 layout: ../layouts/About.astro
 title: 關於
 ---
-我是一位臨床心理師，2026–27 年在 Glasgow 攻讀城市分析（Urban Analytics）的碩士學位。
+我是臨床心理師 Lucas，2026–27 年在 Glasgow 攻讀城市分析（Urban Analytics）的碩士學位。
 
 這本手帳記下這一年：課堂上學到的方法，走在城市裡看到的人和空間，以及交出去的習作。我想試著把心理學看人的方式，和用數據看城市的方式放在一起。
 
