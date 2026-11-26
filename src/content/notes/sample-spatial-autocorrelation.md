@@ -3,7 +3,7 @@ title: 空間自相關：為什麼鄰居很重要
 date: 2026-11-21
 course: 空間資料分析
 week: 8
-draft: true
+draft: false
 ---
 這是一則**範例筆記**（draft: true，不會發布）。看完格式後可以刪掉。
 
