@@ -42,8 +42,6 @@ content:
       - { name: city, label: 城市名, type: string }
       - { name: street, label: 街道, type: string }
       - { name: target, label: 觀察目標, type: string }
-      - { name: lat, label: 緯度, type: number, description: "在 Google 地圖按右鍵可複製座標，例如 55.9497（有填經緯度才會出現小地圖）" }
-      - { name: lng, label: 經度, type: number, description: "例如 -3.1906（西經是負數）" }
       - { name: cover, label: 照片, type: image }
       - { name: related, label: 相關筆記, type: string, description: "那則筆記的檔名（不含 .md），不確定可以留空" }
       - { name: draft, label: 草稿（勾選就不發布）, type: boolean, default: false }

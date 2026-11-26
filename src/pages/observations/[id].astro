@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { render, getEntry } from 'astro:content';
-import { list, u, fmt, coord } from '../../lib';
+import { list, u, fmt } from '../../lib';
 
 export async function getStaticPaths() {
   const items = await list('observations');
@@ -10,11 +10,11 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
-const c = coord(d.lat, d.lng);
+const place = [d.street, d.city].filter(Boolean).join(', ');
 const note = d.related ? await getEntry('notes', d.related) : undefined;
-const osm = c ? `https://www.openstreetmap.org/?mlat=${d.lat}&mlon=${d.lng}#map=17/${d.lat}/${d.lng}` : undefined;
+const osm = place ? `https://www.openstreetmap.org/search?query=${encodeURIComponent(place)}` : undefined;
 ---
-<Base title={d.title} active="observations" crumb={['觀察', d.city?.toUpperCase(), c].filter(Boolean).join(' / ')}>
+<Base title={d.title} active="observations" crumb={['觀察', d.city?.toUpperCase(), d.street?.toUpperCase()].filter(Boolean).join(' / ')}>
   <div class="meta"><span class="kind observations">觀察</span><span>{fmt(d.date)}</span>{d.street && <span>{d.street}</span>}</div>
   <h1 class="big">{d.title}</h1>
   <div class="two">
@@ -32,7 +32,7 @@ const osm = c ? `https://www.openstreetmap.org/?mlat=${d.lat}&mlon=${d.lng}#map=
             <g stroke="#1C1C1C" stroke-width="1.2"><line x1="100" y1="20" x2="100" y2="130" /><line x1="30" y1="75" x2="170" y2="75" /></g>
             <circle cx="100" cy="75" r="14" fill="none" stroke="#1C1C1C" stroke-width="1.5" />
             <circle cx="100" cy="75" r="7" fill="#F2B84B" stroke="#1C1C1C" stroke-width="1.5" />
-            <text x="100" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1C1C1C">{c}</text>
+            <text x="100" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1C1C1C">{d.street ?? d.city}</text>
           </svg>
         </a>
       )}

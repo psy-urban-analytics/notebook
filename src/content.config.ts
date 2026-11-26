@@ -28,8 +28,6 @@ const observations = defineCollection({
     city: z.string().optional(), // 城市名
     street: z.string().optional(), // 街道
     target: z.string().optional(), // 觀察目標
-    lat: z.coerce.number().optional(), // 緯度（有填才會出現小地圖）
-    lng: z.coerce.number().optional(), // 經度
     related: z.string().optional(), // 相關筆記的檔名（不含 .md）
   }),
 });

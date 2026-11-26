@@ -4,8 +4,6 @@ date: 2026-11-08
 city: Edinburgh
 street: Royal Mile
 target: 坡道轉角的停留行為
-lat: 55.9497
-lng: -3.1906
 related: sample-spatial-autocorrelation
 draft: true
 ---

@@ -45,10 +45,3 @@ export function fmt(d: Date): string {
   const p = (n: number) => String(n).padStart(2, '0');
   return `${d.getUTCFullYear()}.${p(d.getUTCMonth() + 1)}.${p(d.getUTCDate())}`;
 }
-
-export function coord(lat?: number, lng?: number): string | undefined {
-  if (lat == null || lng == null) return undefined;
-  const ns = lat >= 0 ? 'N' : 'S';
-  const ew = lng >= 0 ? 'E' : 'W';
-  return `${Math.abs(lat).toFixed(4)}° ${ns}, ${Math.abs(lng).toFixed(4)}° ${ew}`;
-}

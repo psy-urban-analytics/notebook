@@ -4,8 +4,6 @@ date: 2026-11-02
 city: Glasgow
 street: Argyle Street
 target: 候車座位的使用
-lat: 55.8580
-lng: -4.2590
 draft: true
 ---
 
