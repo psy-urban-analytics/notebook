@@ -1,0 +1,21 @@
+---
+import { u, fmt, KIND_LABEL, type Card } from '../lib';
+interface Props { cards: Card[]; showKind?: boolean; empty?: string }
+const { cards, showKind = true, empty = '這裡還沒有紀錄' } = Astro.props;
+---
+{cards.length === 0 ? (
+  <div class="empty-state"><b>{empty}</b>寫下第一則之後，它就會出現在這裡。</div>
+) : (
+  <div class="cards">
+    {cards.map((c) => (
+      <a class="card" href={u(`${c.kind}/${c.id}/`)}>
+        {c.cover
+          ? <div class="thumb"><img src={u(c.cover)} alt="" loading="lazy" /></div>
+          : <div class="thumb empty" aria-hidden="true">{KIND_LABEL[c.kind]}</div>}
+        {showKind && <span class={`kind ${c.kind}`}>{KIND_LABEL[c.kind]}</span>}
+        <h3>{c.title}</h3>
+        <span class="date">{fmt(c.date)}{c.sub && ` · ${c.sub}`}</span>
+      </a>
+    ))}
+  </div>
+)}

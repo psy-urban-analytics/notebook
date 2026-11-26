@@ -1,0 +1,83 @@
+# Pages CMS 後台設定：https://app.pagescms.org
+# 登入 GitHub 後選這個 repo，就會看到「筆記、觀察、習作、關於」四個項目。
+media:
+  input: public/uploads
+  output: /notebook/uploads  # 含網站的 base 路徑，內文圖片才找得到
+
+content:
+  - name: notes
+    label: 筆記
+    type: collection
+    path: src/content/notes
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, course, date, draft]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: 標題, type: string, required: true }
+      - { name: date, label: 日期, type: date, required: true }
+      - { name: course, label: 課程, type: string }
+      - { name: week, label: 第幾週, type: number }
+      - { name: cover, label: 縮圖, type: image, description: 沒有也可以，會顯示一張方格紙 }
+      - { name: draft, label: 草稿（勾選就不發布）, type: boolean, default: false }
+      - { name: body, label: 內文, type: rich-text }
+
+  - name: observations
+    label: 觀察
+    type: collection
+    path: src/content/observations
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, city, date, draft]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: 標題, type: string, required: true }
+      - { name: date, label: 日期, type: date, required: true }
+      - { name: city, label: 城市名, type: string }
+      - { name: street, label: 街道, type: string }
+      - { name: target, label: 觀察目標, type: string }
+      - { name: lat, label: 緯度, type: number, description: "在 Google 地圖按右鍵可複製座標，例如 55.9497（有填經緯度才會出現小地圖）" }
+      - { name: lng, label: 經度, type: number, description: "例如 -3.1906（西經是負數）" }
+      - { name: cover, label: 照片, type: image }
+      - { name: related, label: 相關筆記, type: string, description: "那則筆記的檔名（不含 .md），不確定可以留空" }
+      - { name: draft, label: 草稿（勾選就不發布）, type: boolean, default: false }
+      - { name: body, label: 內文, type: rich-text }
+
+  - name: works
+    label: 習作
+    type: collection
+    path: src/content/works
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, course, date, draft]
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: 標題, type: string, required: true }
+      - { name: date, label: 日期, type: date, required: true }
+      - { name: course, label: 出自哪門課, type: string }
+      - { name: assignment, label: 作業名稱, type: string, description: 例如：作業一 }
+      - { name: cover, label: 成果圖, type: image }
+      - { name: question, label: 問題, type: string }
+      - { name: method, label: 方法, type: string }
+      - { name: finding, label: 發現, type: string }
+      - { name: related, label: 相關筆記, type: string, description: "那則筆記的檔名（不含 .md），不確定可以留空" }
+      - { name: draft, label: 草稿（勾選就不發布）, type: boolean, default: false }
+      - { name: body, label: 內文, type: rich-text }
+
+  - name: about
+    label: 關於
+    type: file
+    path: src/pages/about.md
+    fields:
+      - { name: layout, type: string, hidden: true, default: ../layouts/About.astro }
+      - { name: title, label: 標題, type: string }
+      - { name: body, label: 內文, type: rich-text }

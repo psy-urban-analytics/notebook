@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import { list, u, fmt } from '../../lib';
+const items = await list('observations');
+
+// 座標圖：每座城市一個點，數字是記了幾則
+type City = { name: string; lat: number; lng: number; n: number };
+const cities = new Map<string, City>();
+for (const e of items) {
+  const { lat, lng } = e.data;
+  if (lat == null || lng == null) continue;
+  const name = e.data.city ?? '未命名';
+  const c = cities.get(name);
+  if (c) c.n++;
+  else cities.set(name, { name, lat, lng, n: 1 });
+}
+const pts = [...cities.values()];
+const W = 600, H = 300, P = 48;
+let plot: { x: number; y: number; c: City }[] = [];
+let ticksX: { x: number; v: number }[] = [], ticksY: { y: number; v: number }[] = [];
+if (pts.length) {
+  let minLat = Math.min(...pts.map((p) => p.lat)), maxLat = Math.max(...pts.map((p) => p.lat));
+  let minLng = Math.min(...pts.map((p) => p.lng)), maxLng = Math.max(...pts.map((p) => p.lng));
+  const padLat = Math.max(0.5, (maxLat - minLat) * 0.2), padLng = Math.max(0.8, (maxLng - minLng) * 0.2);
+  minLat -= padLat; maxLat += padLat; minLng -= padLng; maxLng += padLng;
+  const sx = (v: number) => P + ((v - minLng) / (maxLng - minLng)) * (W - 2 * P);
+  const sy = (v: number) => H - P + -((v - minLat) / (maxLat - minLat)) * (H - 2 * P);
+  plot = pts.map((c) => ({ x: sx(c.lng), y: sy(c.lat), c }));
+  const step = (span: number) => (span > 8 ? 2 : span > 3 ? 1 : 0.5);
+  const s1 = step(maxLng - minLng), s2 = step(maxLat - minLat);
+  for (let v = Math.ceil(minLng / s1) * s1; v <= maxLng; v += s1) ticksX.push({ x: sx(v), v });
+  for (let v = Math.ceil(minLat / s2) * s2; v <= maxLat; v += s2) ticksY.push({ y: sy(v), v });
+}
+const lon = (v: number) => `${Math.abs(v)}°${v < 0 ? 'W' : 'E'}`;
+const lat = (v: number) => `${Math.abs(v)}°${v < 0 ? 'S' : 'N'}`;
+---
+<Base title="觀察" active="observations" crumb={`觀察 / OBSERVATIONS · ${cities.size} PLACES · ${items.length} ENTRIES`}>
+  <div class="sheet-title"><h2>走過的地方</h2><span class="meta">在城市裡看到、想到的</span></div>
+  {plot.length > 0 && (
+    <div class="plot">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`座標圖：${pts.map((p) => `${p.name} ${p.n} 則`).join('、')}`}>
+        <g stroke="#2E5268" stroke-width="1">
+          {ticksX.map((t) => <line x1={t.x} y1={20} x2={t.x} y2={H - 30} />)}
+          {ticksY.map((t) => <line x1={30} y1={t.y} x2={W - 20} y2={t.y} />)}
+        </g>
+        <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#9FB6C4">
+          {ticksX.map((t) => <text x={t.x + 3} y={H - 16}>{lon(Math.round(t.v * 10) / 10)}</text>)}
+          {ticksY.map((t) => <text x={4} y={t.y - 3}>{lat(Math.round(t.v * 10) / 10)}</text>)}
+        </g>
+        {plot.slice(1).map((p, i) => (
+          <path d={`M${plot[i].x} ${plot[i].y} L${p.x} ${p.y}`} fill="none" stroke="#F2B84B" stroke-width="1.5" stroke-dasharray="4 4" />
+        ))}
+        {plot.map((p) => (
+          <g>
+            <circle cx={p.x} cy={p.y} r={Math.min(4 + p.c.n, 10)} fill="#F2B84B" />
+            <text x={p.x + 12} y={p.y + 4} font-family="Noto Sans TC, sans-serif" font-size="13" fill="#FFFFFF" stroke="#1D3B4E" stroke-width="4" paint-order="stroke">{p.c.name} · {p.c.n}</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  )}
+  {items.length === 0 ? (
+    <div class="empty-state"><b>這裡還沒有觀察</b>寫下第一則之後，它就會出現在這裡。</div>
+  ) : (
+    <div class="rows">
+      {items.map((e) => (
+        <a class="row" href={u(`observations/${e.id}/`)}>
+          <div><b>{e.data.title}</b><span>{[e.data.city, e.data.street].filter(Boolean).join(' · ')}</span></div>
+          <span class="d">{fmt(e.data.date)}</span>
+        </a>
+      ))}
+    </div>
+  )}
+</Base>

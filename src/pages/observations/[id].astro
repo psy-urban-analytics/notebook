@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import { render, getEntry } from 'astro:content';
+import { list, u, fmt, coord } from '../../lib';
+
+export async function getStaticPaths() {
+  const items = await list('observations');
+  return items.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const c = coord(d.lat, d.lng);
+const note = d.related ? await getEntry('notes', d.related) : undefined;
+const osm = c ? `https://www.openstreetmap.org/?mlat=${d.lat}&mlon=${d.lng}#map=17/${d.lat}/${d.lng}` : undefined;
+---
+<Base title={d.title} active="observations" crumb={['觀察', d.city?.toUpperCase(), c].filter(Boolean).join(' / ')}>
+  <div class="meta"><span class="kind observations">觀察</span><span>{fmt(d.date)}</span>{d.street && <span>{d.street}</span>}</div>
+  <h1 class="big">{d.title}</h1>
+  <div class="two">
+    <div class="prose" style="display:flex;flex-direction:column;gap:14px">
+      {d.cover && <div class="cover"><img src={u(d.cover)} alt="" /></div>}
+      <div><Content /></div>
+    </div>
+    <aside class="side">
+      {osm && (
+        <a class="inkmap" href={osm} target="_blank" rel="noopener" aria-label="在 OpenStreetMap 開啟這個地點">
+          <svg viewBox="0 0 200 150" aria-hidden="true">
+            <g fill="none" stroke="#9A9A96">
+              <path d="M0 38 C55 22 120 56 200 32" /><path d="M0 72 C55 56 120 90 200 66" /><path d="M0 106 C55 90 120 124 200 100" /><path d="M0 136 C55 122 120 150 200 130" />
+            </g>
+            <g stroke="#1C1C1C" stroke-width="1.2"><line x1="100" y1="20" x2="100" y2="130" /><line x1="30" y1="75" x2="170" y2="75" /></g>
+            <circle cx="100" cy="75" r="14" fill="none" stroke="#1C1C1C" stroke-width="1.5" />
+            <circle cx="100" cy="75" r="7" fill="#F2B84B" stroke="#1C1C1C" stroke-width="1.5" />
+            <text x="100" y="146" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1C1C1C">{c}</text>
+          </svg>
+        </a>
+      )}
+      <dl class="facts">
+        {d.city && <><dt>城市</dt><dd>{d.city}</dd></>}
+        {d.street && <><dt>街道</dt><dd>{d.street}</dd></>}
+        {d.target && <><dt>觀察目標</dt><dd>{d.target}</dd></>}
+        {note && <><dt>相關筆記</dt><dd><a href={u(`notes/${note.id}/`)}>{note.data.title}</a></dd></>}
+      </dl>
+    </aside>
+  </div>
+</Base>

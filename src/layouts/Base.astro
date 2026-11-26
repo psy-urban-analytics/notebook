@@ -1,0 +1,77 @@
+---
+import '../styles/global.css';
+import { u } from '../lib';
+
+interface Props {
+  title?: string;
+  description?: string;
+  active?: 'home' | 'notes' | 'observations' | 'works' | 'about';
+  crumb?: string;
+  home?: boolean;
+}
+const { title, description, active, crumb, home = false } = Astro.props;
+const SITE = '城市分析學習手帳';
+const SUB = 'Urban Analytics in Glasgow · 2026–27';
+const INTRO = '以心理師的眼光，學習用數據去解讀城市生活。';
+const pageTitle = title ? `${title}｜${SITE}` : SITE;
+const desc = description ?? INTRO;
+const links = [
+  ['home', '', '最近'],
+  ['notes', 'notes/', '筆記'],
+  ['observations', 'observations/', '觀察'],
+  ['works', 'works/', '習作'],
+  ['about', 'about/', '關於'],
+] as const;
+---
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={desc} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={desc} />
+  <meta name="theme-color" content="#23455A" />
+  <link rel="icon" href={u('favicon.svg')} type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=LXGW+WenKai+TC&display=swap" />
+</head>
+<body>
+  <header class="banner">
+    {home && (
+      <svg class="route" viewBox="0 0 180 300" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M120 0 L70 90 L140 170 L90 300" fill="none" stroke="#F2B84B" stroke-width="2" stroke-dasharray="6 6" />
+        <circle cx="70" cy="90" r="5" fill="#F2B84B" />
+      </svg>
+    )}
+    <div class="bar gutter">
+      <a class="brand" href={u()}><b>{SITE}</b><small>{SUB}</small></a>
+      <nav class="nav" aria-label="主選單">
+        {links.map(([key, path, label]) => (
+          <a href={u(path)} aria-current={active === key ? 'page' : undefined}>{label}</a>
+        ))}
+      </nav>
+    </div>
+    {home ? (
+      <div class="hero gutter">
+        <span class="coord">55.8642° N, 4.2518° W · GLASGOW</span>
+        <h1>{INTRO}</h1>
+        <p>這一年在 Glasgow 讀城市分析：課堂上學到的、走在城市裡看到的、交出去的習作。</p>
+      </div>
+    ) : (
+      <div class="page-head gutter">{crumb && <span class="coord">{crumb}</span>}</div>
+    )}
+  </header>
+  <main class="sheet-wrap">
+    <div class="sheet">
+      <slot />
+    </div>
+  </main>
+  <footer class="site-foot gutter">
+    <span>{SITE} · 2026–27</span>
+    <a href={u('rss.xml')}>RSS</a>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import { render, getEntry } from 'astro:content';
+import { list, u, fmt } from '../../lib';
+
+export async function getStaticPaths() {
+  const items = await list('works');
+  return items.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const note = d.related ? await getEntry('notes', d.related) : undefined;
+const steps = [['問題', d.question], ['方法', d.method], ['發現', d.finding]].filter(([, v]) => v);
+---
+<Base title={d.title} active="works" crumb={['習作', d.course, d.assignment].filter(Boolean).join(' / ')}>
+  <div class="meta"><span class="kind works">習作</span>{(d.course || d.assignment) && <span>{[d.course, d.assignment].filter(Boolean).join(' · ')}</span>}<span>{fmt(d.date)}</span></div>
+  <h1 class="big">{d.title}</h1>
+  {d.cover && <div class="cover"><img src={u(d.cover)} alt="" /></div>}
+  {steps.length > 0 && (
+    <div class="steps">{steps.map(([k, v]) => <div><b>{k}</b>{v}</div>)}</div>
+  )}
+  <div class="prose"><Content /></div>
+  {note && (
+    <div class="box"><b>→ 相關筆記</b><a href={u(`notes/${note.id}/`)}>{note.data.title}</a></div>
+  )}
+</Base>

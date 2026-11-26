@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import Cards from '../components/Cards.astro';
+import { recent, u } from '../lib';
+const cards = await recent(12);
+---
+<Base active="home" home>
+  <div class="sheet-title">
+    <h2>最近寫下的</h2>
+    <nav class="filters" aria-label="依類型瀏覽">
+      <a href={u()} aria-current="page">全部</a>
+      <a href={u('notes/')}>筆記</a>
+      <a href={u('observations/')}>觀察</a>
+      <a href={u('works/')}>習作</a>
+    </nav>
+  </div>
+  <Cards cards={cards} />
+</Base>

@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import { render } from 'astro:content';
+import { list, u, fmt } from '../../lib';
+
+export async function getStaticPaths() {
+  const items = await list('notes');
+  return items.map((entry) => {
+    const same = items.filter((e) => e.data.course === entry.data.course);
+    const i = same.indexOf(entry);
+    return { params: { id: entry.id }, props: { entry, newer: same[i - 1], older: same[i + 1] } };
+  });
+}
+const { entry, newer, older } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const works = (await list('works')).filter((w) => w.data.related === entry.id);
+const obs = (await list('observations')).filter((o) => o.data.related === entry.id);
+const week = d.week ? `WEEK ${String(d.week).padStart(2, '0')}` : undefined;
+---
+<Base title={d.title} active="notes" crumb={['筆記', d.course, week].filter(Boolean).join(' / ')}>
+  <div class="meta"><span class="kind notes">筆記</span>{d.course && <span>{d.course}</span>}<span>{[week, fmt(d.date)].filter(Boolean).join(' · ')}</span></div>
+  <h1 class="big">{d.title}</h1>
+  {d.cover && <div class="cover"><img src={u(d.cover)} alt="" /></div>}
+  <div class="prose"><Content /></div>
+  {(works.length > 0 || obs.length > 0) && (
+    <div class="box">
+      {works.length > 0 && <b>→ 相關習作</b>}
+      {works.map((w) => <a href={u(`works/${w.id}/`)}>{w.data.title}</a>)}
+      {obs.length > 0 && <b>→ 相關觀察</b>}
+      {obs.map((o) => <a href={u(`observations/${o.id}/`)}>{o.data.title}</a>)}
+    </div>
+  )}
+  {(older || newer) && (
+    <nav class="pager" aria-label="同一門課的其他筆記">
+      {older ? <a href={u(`notes/${older.id}/`)}>← {older.data.title}</a> : <span></span>}
+      {newer && <a href={u(`notes/${newer.id}/`)}>{newer.data.title} →</a>}
+    </nav>
+  )}
+</Base>

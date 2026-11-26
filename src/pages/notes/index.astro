@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cards from '../../components/Cards.astro';
+import { list, toCard } from '../../lib';
+const items = await list('notes');
+// 依課程分組，課程內依日期新到舊
+const groups = new Map<string, typeof items>();
+for (const e of items) {
+  const k = e.data.course ?? '其他';
+  if (!groups.has(k)) groups.set(k, []);
+  groups.get(k)!.push(e);
+}
+---
+<Base title="筆記" active="notes" crumb="筆記 / NOTES">
+  <div class="sheet-title"><h2>筆記</h2><span class="meta">課堂上學到的事，依課程整理</span></div>
+  {items.length === 0 && <Cards cards={[]} />}
+  {[...groups].map(([course, es]) => (
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <h3 style="font-size:17px">{course}</h3>
+      <Cards cards={es.map((e) => toCard('notes', e))} showKind={false} />
+    </section>
+  ))}
+</Base>

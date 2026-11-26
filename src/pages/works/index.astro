@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cards from '../../components/Cards.astro';
+import { list, toCard } from '../../lib';
+const cards = (await list('works')).map((e) => toCard('works', e));
+---
+<Base title="習作" active="works" crumb="習作 / STUDIO WORK">
+  <div class="sheet-title"><h2>習作</h2><span class="meta">作業與專案</span></div>
+  <Cards cards={cards} showKind={false} />
+</Base>
