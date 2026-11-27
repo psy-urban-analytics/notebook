@@ -37,6 +37,26 @@ const links = [
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=LXGW+WenKai+TC&display=swap" />
+  <script is:inline>
+    // 依 Glasgow 的日出日落切換白天／夜晚（頁首 logo 與底色）
+    (function () {
+      var LAT = 55.8642, LON = -4.2518, R = Math.PI / 180;
+      function isNight(now) {
+        var start = Date.UTC(now.getUTCFullYear(), 0, 0);
+        var n = Math.floor((now - start) / 864e5);
+        var dec = -23.44 * Math.cos((2 * Math.PI / 365) * (n + 10)) * R;
+        var cosH = (Math.sin(-0.83 * R) - Math.sin(LAT * R) * Math.sin(dec)) / (Math.cos(LAT * R) * Math.cos(dec));
+        if (cosH > 1) return true;   // 整天在地平線下
+        if (cosH < -1) return false; // 整天有太陽
+        var h = Math.acos(cosH) / R / 15, noon = 12 - LON / 15;
+        var t = now.getUTCHours() + now.getUTCMinutes() / 60;
+        return t < noon - h || t > noon + h;
+      }
+      function apply() { document.documentElement.dataset.time = isNight(new Date()) ? 'night' : 'day'; }
+      apply();
+      setInterval(apply, 5 * 60 * 1000);
+    })();
+  </script>
 </head>
 <body>
   <header class="banner">
@@ -47,7 +67,7 @@ const links = [
       </svg>
     )}
     <div class="bar gutter">
-      <a class="brand" href={u()}><img src={u('logo/corner-night.svg')} alt="" width="56" height="56" /><span><b>{SITE}</b><small>{SUB}</small></span></a>
+      <a class="brand" href={u()}><img class="logo-day" src={u('logo/corner-banner-day.svg')} alt="" width="56" height="56" /><img class="logo-night" src={u('logo/corner-night.svg')} alt="" width="56" height="56" /><span><b>{SITE}</b><small>{SUB}</small></span></a>
       <nav class="nav" aria-label="主選單">
         {links.map(([key, path, label]) => (
           <a href={u(path)} aria-current={active === key ? 'page' : undefined}>{label}</a>
