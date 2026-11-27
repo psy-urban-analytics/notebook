@@ -47,7 +47,7 @@ const links = [
       </svg>
     )}
     <div class="bar gutter">
-      <a class="brand" href={u()}><b>{SITE}</b><small>{SUB}</small></a>
+      <a class="brand" href={u()}><img src={u('logo/notebook-night.svg')} alt="" width="56" height="56" /><span><b>{SITE}</b><small>{SUB}</small></span></a>
       <nav class="nav" aria-label="主選單">
         {links.map(([key, path, label]) => (
           <a href={u(path)} aria-current={active === key ? 'page' : undefined}>{label}</a>

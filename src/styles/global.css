@@ -46,7 +46,9 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
 .banner { position: relative; overflow: hidden; }
 .banner .route { position: absolute; right: 6%; top: 0; height: 100%; width: 180px; pointer-events: none; }
 .bar { position: relative; max-width: 980px; margin: 0 auto; padding-block: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; }
-.brand { display: flex; flex-direction: column; line-height: 1.3; text-decoration: none; color: #fff; }
+.brand { display: flex; align-items: center; gap: 12px; line-height: 1.3; text-decoration: none; color: #fff; }
+.brand img { width: 56px; height: 56px; flex: none; }
+.brand > span { display: flex; flex-direction: column; }
 .brand b { font-size: 19px; font-weight: 700; letter-spacing: .04em; }
 .brand small { font-family: var(--mono); font-size: 11px; color: var(--on-navy-faint); letter-spacing: .06em; }
 .nav { display: flex; gap: 4px 20px; flex-wrap: wrap; font-size: 15px; }
@@ -130,6 +132,12 @@ mark { background: linear-gradient(transparent 58%, var(--yellow) 58%); color: i
 .pager { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 14px; border-top: 1px dashed var(--pencil); padding-top: 12px; }
 .pager a { text-decoration: none; }
 .pager a:hover { background: linear-gradient(transparent 60%, var(--yellow) 60%); }
+
+/* 頁面插圖（logo 的白天版） */
+.title-mark { display: flex; align-items: center; gap: 14px; }
+.title-mark img { width: 72px; height: 72px; flex: none; }
+.about-marks { display: flex; gap: 20px; align-items: center; }
+.about-marks img { width: 96px; height: 96px; max-width: 100%; }
 
 /* 觀察列表：各城市記了幾則 */
 .places { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
