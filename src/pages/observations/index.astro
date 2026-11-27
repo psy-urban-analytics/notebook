@@ -11,7 +11,7 @@ for (const e of items) {
 const cities = [...tally].sort((a, b) => b[1] - a[1]);
 ---
 <Base title="觀察" active="observations" crumb={`觀察 / OBSERVATIONS · ${cities.length} PLACES · ${items.length} ENTRIES`}>
-  <div class="sheet-title"><h2>走過的地方</h2><span class="meta">在城市裡看到、想到的</span></div>
+  <div class="sheet-title"><div class="title-mark"><img src={u('logo/corner-day.svg')} alt="" width="72" height="72" /><h2>走過的地方</h2></div><span class="meta">在城市裡看到、想到的</span></div>
   {cities.length > 0 && (
     <ul class="places" aria-label="各城市的觀察數">
       {cities.map(([name, n]) => <li><b>{name}</b><span>{n}</span></li>)}
