@@ -6,7 +6,6 @@ const { frontmatter } = Astro.props;
 <Base title={frontmatter.title} active="about" crumb="關於 / ABOUT">
   <div class="about-marks" aria-hidden="true">
     <img src={u('logo/notebook-day.svg')} alt="" width="96" height="96" />
-    <img src={u('logo/corner-day.svg')} alt="" width="96" height="96" />
   </div>
   <h1 class="big">{frontmatter.title}</h1>
   <div class="prose"><slot /></div>
