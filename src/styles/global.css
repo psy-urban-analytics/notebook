@@ -49,6 +49,12 @@ a:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
 .brand { display: flex; align-items: center; gap: 12px; line-height: 1.3; text-decoration: none; color: #fff; }
 .brand img { width: 56px; height: 56px; flex: none; }
 .brand > span { display: flex; flex-direction: column; }
+
+/* 白天／夜晚：依 Glasgow 日出日落切換，夜晚底色稍深、頁首換成有月亮的 logo */
+.brand .logo-night { display: none; }
+html[data-time='night'] .brand .logo-day { display: none; }
+html[data-time='night'] .brand .logo-night { display: block; }
+html[data-time='night'] body { background-color: #1a3545; }
 .brand b { font-size: 19px; font-weight: 700; letter-spacing: .04em; }
 .brand small { font-family: var(--mono); font-size: 11px; color: var(--on-navy-faint); letter-spacing: .06em; }
 .nav { display: flex; gap: 4px 20px; flex-wrap: wrap; font-size: 15px; }
