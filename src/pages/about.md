@@ -9,5 +9,4 @@ title: 關於
 學習筆記不一定能完整呈現，但我會慢慢補上。
 若你有什麼想法或共鳴，歡迎來信給我回饋或是討論。  聯絡信箱：[psynarstudio@gmail.com](mailto:psynarstudio@gmail.com)
 
-2023-2025之間我和夥伴一起錄過 podcast [《卡拉狂想曲》](https://open.firstory.fm/user/callamadness/episodes)  
-也歡迎聆聽喔!
+2023-2025之間我和夥伴一起錄過了 podcast [《卡拉狂想曲》](https://open.firstory.fm/user/callamadness/episodes)  也歡迎聆聽喔!
